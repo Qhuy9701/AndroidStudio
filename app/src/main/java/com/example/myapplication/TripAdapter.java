@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class TripAdapter extends ArrayAdapter<Trip> {
         tvother.setText(trip.getOtherServices());
 
         Button btnDelete = convertView.findViewById(R.id.btnDelete);
-
         btnDelete.setOnClickListener(v -> {
             new AlertDialog.Builder(mContext)
                     .setTitle("Xác nhận xoá")
@@ -71,6 +71,20 @@ public class TripAdapter extends ArrayAdapter<Trip> {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         });
+        Button btnAddCost = convertView.findViewById(R.id.btnAddCost);
+        btnAddCost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, AddCost.class);
+                intent.putExtra("id", trip.getTripId());
+                intent.putExtra("name", trip.getName());
+                mContext.startActivity(intent);
+
+                // Hiển thị ID và tên của chuyến đi bằng Toast
+                Toast.makeText(mContext, "ID: " + trip.getTripId() + ", Name: " + trip.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
         return convertView;
