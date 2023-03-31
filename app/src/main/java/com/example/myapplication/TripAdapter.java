@@ -76,8 +76,8 @@ public class TripAdapter extends ArrayAdapter<Trip> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AddCost.class);
-                intent.putExtra("id", trip.getTripId());
-                intent.putExtra("name", trip.getName());
+                intent.putExtra("tripId", trip.getTripId());
+                intent.putExtra("tripName", trip.getName());
                 mContext.startActivity(intent);
 
                 // Hiển thị ID và tên của chuyến đi bằng Toast
