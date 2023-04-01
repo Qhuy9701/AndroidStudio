@@ -15,6 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Trips";
     //tên bảng
     public static final String TABLE_TRIP = "Trips";
+    public static final String TABLE_COST = "Cost";
     //tên các cột
     public static final String TRIP_ID = "trip_id";
     public static final String TRIP_NAME = "trip_name";
@@ -24,6 +25,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TRIP_REQUIRES = "trip_requires";
     public static final String TRIP_DESCRIPTION = "trip_description";
     public static final String TRIP_SERVICES = "trip_services";
+
+    //tên các cột
+    public static final String COST_ID = "cost_id";
+    public static final String FK_TRIP_ID = "trip_id";
+    public static final String COST_TYPE = "cost_type";
+    public static final String COST_AMOUNT = "cost_amount";
+    public static final String COST_TIME = "cost_time";
+    public static final String COST_COMMENTS = "cost_comment";
 
     private final SQLiteDatabase database;
 
@@ -46,6 +55,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             TRIP_REQUIRES,
             TRIP_DESCRIPTION,
             TRIP_SERVICES
+    );
+
+    private static final String TABLE_COST_CREATE = String.format(
+            "CREATE TABLE %s " +
+                    "(%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "%s INTEGER NOT NULL, " +
+                    "%s TEXT NOT NULL, " +
+                    "%s REAL NOT NULL, " +
+                    "%s TEXT NOT NULL, " +
+                    "%s TEXT)",
+            TABLE_COST,
+            COST_ID,
+            FK_TRIP_ID,
+            COST_TYPE,
+            COST_AMOUNT,
+            COST_TIME,
+            COST_COMMENTS
     );
 
     public DatabaseHelper(Context context) {
