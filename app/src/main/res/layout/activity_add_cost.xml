@@ -62,6 +62,34 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
+        android:id="@+id/txtAmountoftheexpense"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="80dp"
+        android:ems="10"
+        android:hint="Amount of the expense"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtTimeoftheexpense"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTypeofexpense" />
+
+    <EditText
+        android:id="@+id/txtTimeoftheexpense"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Time of the expense"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAmountoftheexpense" />
+
+    <EditText
         android:id="@+id/txtAdditionalcomments"
         android:layout_width="300dp"
         android:layout_height="48dp"
@@ -78,34 +106,6 @@
         app:layout_constraintTop_toBottomOf="@+id/txtTimeoftheexpense"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/txtTimeoftheexpense"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="Time of the expense"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAmountoftheexpense" />
-
-    <EditText
-        android:id="@+id/txtAmountoftheexpense"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="80dp"
-        android:ems="10"
-        android:hint="Amount of the expense"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtTimeoftheexpense"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTypeofexpense" />
-
     <Button
         android:id="@+id/btnInsertCost"
         android:layout_width="wrap_content"
@@ -117,21 +117,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtAdditionalcomments"
         app:layout_constraintVertical_bias="0.035" />
-
-    <ListView
-        android:id="@+id/listviewcost"
-        android:layout_width="598dp"
-        android:layout_height="374dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnInsertCost"
-        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnBack2"
