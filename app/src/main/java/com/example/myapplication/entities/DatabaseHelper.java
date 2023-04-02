@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Debug;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "%s TEXT NOT NULL, " +
                     "%s REAL NOT NULL, " +
                     "%s TEXT NOT NULL, " +
-                    "%s TEXT)",
+                    "%s TEXT NOT NULL)", // Add the new column definition here
             TABLE_COST,
             COST_ID,
             FK_TRIP_ID,
@@ -74,16 +75,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COST_COMMENTS
     );
 
+
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 4);
         database = getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_TRIP_CREATE);
+        Log.e("quanghuy", TABLE_COST_CREATE);
         db.execSQL(TABLE_COST_CREATE);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -191,7 +195,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Cost> costs = new ArrayList<>();
 
         // Select All Query with JOIN
-        String my_query = "SELECT b.*, a.cost FROM " + TABLE_TRIP + " b JOIN " + TABLE_COST + " a ON b." + TRIP_ID + " = a." + FK_TRIP_ID + " WHERE b." + TRIP_ID + " = " + tripId;
+        String my_query = "SELECT " + TABLE_COST + "." + COST_ID + ", " + TABLE_COST + "." + COST_TYPE + ", " + TABLE_COST + "." + COST_AMOUNT + ", " + TABLE_TRIP + "." + TRIP_NAME + " FROM " + TABLE_COST + " INNER JOIN " + TABLE_TRIP + " ON " + TABLE_COST + "." + FK_TRIP_ID + " = " + TABLE_TRIP + "." + TRIP_ID + " WHERE " + TABLE_COST + "." + FK_TRIP_ID + " = ?";
+
         Cursor cursor = database.rawQuery(my_query, null);
 
         // looping through all rows and adding to list
