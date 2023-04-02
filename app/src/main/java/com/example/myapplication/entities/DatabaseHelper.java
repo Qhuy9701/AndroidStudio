@@ -82,12 +82,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_TRIP_CREATE);
+        db.execSQL(TABLE_COST_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Xóa bảng cũ và tạo lại nếu có phiên bản mới của database
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIP);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COST);
         onCreate(db);
     }
 
@@ -107,6 +109,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e("DatabaseHelper", "Failed to insert trip");
         }
 
+    }
+    public void insertCost(int tripId, String costType, double costAmount, String costTime, String costComment) {
+        ContentValues values = new ContentValues();
+        values.put(FK_TRIP_ID, tripId);
+        values.put(COST_TYPE, costType);
+        values.put(COST_AMOUNT, costAmount);
+        values.put(COST_TIME, costTime);
+        values.put(COST_COMMENTS, costComment);
+
+        long result = database.insert(TABLE_COST, null, values);
+
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to insert cost");
+        }
     }
 
 
@@ -169,6 +185,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return trips;
+    }
+    @SuppressLint("Range")
+    public ArrayList<Cost> getCost(int tripId) {
+        ArrayList<Cost> costs = new ArrayList<>();
+
+        // Select All Query with JOIN
+        String my_query = "SELECT b.*, a.cost FROM " + TABLE_TRIP + " b JOIN " + TABLE_COST + " a ON b." + TRIP_ID + " = a." + FK_TRIP_ID + " WHERE b." + TRIP_ID + " = " + tripId;
+        Cursor cursor = database.rawQuery(my_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Cost cost = new Cost();
+                cost.setCostId(cursor.getInt(cursor.getColumnIndex(COST_ID)));
+                cost.setTripId(cursor.getInt(cursor.getColumnIndex(FK_TRIP_ID)));
+                cost.setCostType(cursor.getString(cursor.getColumnIndex(COST_TYPE)));
+                cost.setCostAmount(cursor.getDouble(cursor.getColumnIndex(COST_AMOUNT)));
+                cost.setCostTime(cursor.getString(cursor.getColumnIndex(COST_TIME)));
+                cost.setCostComment(cursor.getString(cursor.getColumnIndex(COST_COMMENTS)));
+                cost.setCost(cursor.getDouble(cursor.getColumnIndex("cost")));
+
+                costs.add(cost);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return costs;
     }
 
     public void deleteTrip(int tripId) {
