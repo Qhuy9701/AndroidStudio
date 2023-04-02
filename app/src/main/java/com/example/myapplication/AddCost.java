@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class AddCost extends AppCompatActivity {
     private ListView listView;
     private int tripId; // Declare tripId as a global variable
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +39,9 @@ public class AddCost extends AppCompatActivity {
         tvId.setText(String.valueOf(tripId));
         editTextName.setText(tripName);
 
-        listView = findViewById(R.id.listviewcost);
-        showCost(); // Call the method to display existing cost items
         Button btnBack2 = findViewById(R.id.btnBack2);
         btnBack2.setOnClickListener(v -> onBackPressed());
+
         Button btnAddCost = findViewById(R.id.btnInsertCost);
         btnAddCost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +52,6 @@ public class AddCost extends AppCompatActivity {
                 EditText comment = findViewById(R.id.txtAdditionalcomments);
                 DatabaseHelper dbHelper = new DatabaseHelper(AddCost.this);
 
-                // After successful insert
                 try {
                     double costAmount = Double.parseDouble(amount.getText().toString());
                     dbHelper.insertCost(tripId, type.getText().toString(),
@@ -65,7 +65,16 @@ public class AddCost extends AppCompatActivity {
                             time.getText().toString() + ", " +
                             comment.getText().toString();
                     Toast.makeText(AddCost.this, message, Toast.LENGTH_SHORT).show();
-                    showCost(); // Update listView with the latest cost list
+
+                    // Reload the listview with updated data
+                    List<Cost> costList = dbHelper.getCost(tripId);
+                    ArrayAdapter<Cost> adapter = new ArrayAdapter<Cost>(
+                            AddCost.this,
+                            android.R.layout.simple_list_item_1,
+                            costList
+                    );
+                    listView.setAdapter(adapter);
+
                 } catch (NumberFormatException e) {
                     Toast.makeText(AddCost.this, "Lỗi: Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
@@ -74,18 +83,23 @@ public class AddCost extends AppCompatActivity {
             }
         });
 
-    }
-    private void showCost() {
-        DatabaseHelper dbHelper = new DatabaseHelper(AddCost.this);
+        // Load the listview with existing data
+        ListView listView = findViewById(R.id.lvCosts);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
         List<Cost> costList = dbHelper.getCost(tripId);
-        ArrayAdapter<Cost> adapter = new ArrayAdapter<>(AddCost.this,
-                android.R.layout.simple_list_item_1, costList);
+        ArrayAdapter<Cost> adapter = new ArrayAdapter<Cost>(
+                this,
+                android.R.layout.simple_list_item_1,
+                costList
+        );
         listView.setAdapter(adapter);
+
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
-
 }

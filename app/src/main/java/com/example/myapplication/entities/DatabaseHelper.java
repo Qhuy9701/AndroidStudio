@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 4);
+        super(context, DATABASE_NAME, null, 5);
         database = getWritableDatabase();
     }
 
@@ -230,5 +230,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_TRIP, null, null);
         db.close();
     }
-
 }
