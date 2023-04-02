@@ -21,9 +21,8 @@ import java.util.List;
 
 public class AddCost extends AppCompatActivity {
     private ListView listView;
-    private int tripId; // Declare tripId as a global variable
+    private int tripId;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,16 +64,7 @@ public class AddCost extends AppCompatActivity {
                             time.getText().toString() + ", " +
                             comment.getText().toString();
                     Toast.makeText(AddCost.this, message, Toast.LENGTH_SHORT).show();
-
-                    // Reload the listview with updated data
-                    List<Cost> costList = dbHelper.getCost(tripId);
-                    ArrayAdapter<Cost> adapter = new ArrayAdapter<Cost>(
-                            AddCost.this,
-                            android.R.layout.simple_list_item_1,
-                            costList
-                    );
-                    listView.setAdapter(adapter);
-
+                    updateListView();
                 } catch (NumberFormatException e) {
                     Toast.makeText(AddCost.this, "Lỗi: Số tiền không hợp lệ", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
@@ -83,18 +73,8 @@ public class AddCost extends AppCompatActivity {
             }
         });
 
-        // Load the listview with existing data
-        ListView listView = findViewById(R.id.lvCosts);
-
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        List<Cost> costList = dbHelper.getCost(tripId);
-        ArrayAdapter<Cost> adapter = new ArrayAdapter<Cost>(
-                this,
-                android.R.layout.simple_list_item_1,
-                costList
-        );
-        listView.setAdapter(adapter);
-
+        listView = findViewById(R.id.lvCosts); // Instantiate the ListView object
+        updateListView(); // Call the method to update the ListView
     }
 
     @Override
@@ -102,4 +82,16 @@ public class AddCost extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+    private void updateListView() {
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        List<Cost> costList = dbHelper.getCost(tripId);
+        ArrayAdapter<Cost> adapter = new ArrayAdapter<Cost>(
+                this,
+                android.R.layout.simple_list_item_1,
+                costList
+        );
+        listView.setAdapter(adapter); // Call setAdapter on the instantiated listView object
+    }
 }
+
